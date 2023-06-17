@@ -8,10 +8,31 @@
 import Foundation
 
 enum CommandError {
-    case notImplemented
+    case notImplemented,
+         
+         identifierExpected,
+         keywordExpected,
+         numberExpected,
+         punctuationExpected,
+    
+         unexpectedKeyword(expected: Keyword)
+    
+    static func fromType(_ aType: TokenType) -> Self? {
+        switch aType {
+        case .identifier:
+            return .identifierExpected
+        case .keyword:
+            return .keywordExpected
+        case .number:
+            return .numberExpected
+        case .punctuation(_):
+            return .punctuationExpected
+        }
+    }
 }
 
 struct StatusResult<ValueT> {
-    let value: ValueT
-    let error: CommandError? = nil
+    var value: ValueT
+    var error: CommandError? = nil
 }
+

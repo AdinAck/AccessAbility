@@ -8,5 +8,5 @@
 import Foundation
 
 class TestModel: ObservableObject {
-    
+    @Published var testAttr: String = "..."
 }

@@ -7,11 +7,11 @@
 
 import Foundation
 
-enum TokenType: String {
+enum TokenType: Hashable {
     case identifier,
          keyword,
          number,
-         punctuation
+         punctuation(String)
 }
 
 enum Keyword: String {
@@ -29,6 +29,12 @@ struct Token: CustomStringConvertible {
     var description: String {
         return "data: \"\(data)\"\ttype: \(type)\tkeyword: \(keyword == nil ? "N/A" : keyword!.rawValue)"
     }
+}
+
+enum PatternFragment {
+    case type(TokenType),
+         keyword(Keyword)
+        
 }
 
 enum Pointer {
@@ -113,7 +119,7 @@ class Tokenizer: Scanner {
         if keyword != nil {
             type = .keyword
         } else if Self.punc.contains(data) {
-            type = .punctuation
+            type = .punctuation(data)
         } else if data.reduce(true, { partial, char in
             partial && char.isNumber
         }) {
@@ -174,6 +180,53 @@ class Tokenizer: Scanner {
         index += aCount
         
         return true
+    }
+    
+    func matches(pattern aPattern: [PatternFragment]) -> StatusResult<Bool> {
+        let theOriginal = index
+        
+        defer {
+            index = theOriginal
+        }
+        
+        var theResult = StatusResult(value: true)
+        
+        for fragment in aPattern {
+            switch fragment {
+            case .type(let theType):
+                if current().type != theType {
+                    if let error = CommandError.fromType(theType) {
+                        theResult.error = error
+                    } else {
+                        theResult.error = .notImplemented
+                    }
+                        
+                    return theResult
+                }
+            case .keyword(let theKeyword):
+                if current().keyword != theKeyword {
+                    theResult.error = .unexpectedKeyword(expected: theKeyword)
+                    
+                    return theResult
+                }
+            }
+            
+            guard next() else { return theResult }
+        }
+        
+        return theResult
+    }
+    
+    func skipTo(type aType: TokenType) -> Token? {
+        while current().type != aType {
+            guard next() else { return nil }
+        }
+        
+        return current()
+    }
+    
+    func restart() {
+        index = 0
     }
     
     func dump() {

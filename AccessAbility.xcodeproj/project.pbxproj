@@ -12,6 +12,9 @@
 		40AD21DA2A3E39D200E58E88 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AD21D92A3E39D200E58E88 /* main.swift */; };
 		40AD21DE2A3E39DB00E58E88 /* Tokenizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40ED623D2A3E261E0064AC7D /* Tokenizer.swift */; };
 		40AD21DF2A3E39DE00E58E88 /* StatusResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40ED623F2A3E264E0064AC7D /* StatusResult.swift */; };
+		40AD21E12A3E604F00E58E88 /* TestProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4047BF912A3E28B300B5C1E7 /* TestProcessor.swift */; };
+		40AD21E22A3E605300E58E88 /* TestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AD21D02A3E2B2500E58E88 /* TestModel.swift */; };
+		40AD21E32A3E60AC00E58E88 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40ED623B2A3E258E0064AC7D /* Command.swift */; };
 		40ED622F2A3D4D830064AC7D /* AccessAbilityApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40ED622E2A3D4D830064AC7D /* AccessAbilityApp.swift */; };
 		40ED62312A3D4D830064AC7D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40ED62302A3D4D830064AC7D /* ContentView.swift */; };
 		40ED62332A3D4D840064AC7D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 40ED62322A3D4D840064AC7D /* Assets.xcassets */; };
@@ -254,7 +257,10 @@
 			files = (
 				40AD21DF2A3E39DE00E58E88 /* StatusResult.swift in Sources */,
 				40AD21DA2A3E39D200E58E88 /* main.swift in Sources */,
+				40AD21E22A3E605300E58E88 /* TestModel.swift in Sources */,
+				40AD21E12A3E604F00E58E88 /* TestProcessor.swift in Sources */,
 				40AD21DE2A3E39DB00E58E88 /* Tokenizer.swift in Sources */,
+				40AD21E32A3E60AC00E58E88 /* Command.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
