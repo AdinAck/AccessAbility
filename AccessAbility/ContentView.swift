@@ -8,14 +8,26 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var speech = SpeechRecognizer()
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+            Text("\(speech.transcript)")
+                .animation(.spring(), value: speech.transcript)
+            
+            HStack {
+                Button("Start") {
+                    speech.resetTranscript()
+                    speech.startTranscribing()
+                }
+                .buttonStyle(.borderedProminent)
+                
+                Button("Stop") {
+                    speech.stopTranscribing()
+                }
+                .tint(.red)
+            }
         }
-        .padding()
     }
 }
 
