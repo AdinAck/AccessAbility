@@ -33,7 +33,8 @@ actor SpeechRecognizer: ObservableObject {
         }
     }
     
-    @MainActor var transcript: String = ""
+    @MainActor @Published var transcript: String = ""
+    @MainActor @Published var isRecording: Bool = false
     
     private var audioEngine: AVAudioEngine?
     private var request: SFSpeechAudioBufferRecognitionRequest?
@@ -66,6 +67,8 @@ actor SpeechRecognizer: ObservableObject {
     }
     
     @MainActor func startTranscribing() {
+        isRecording = true
+        
         Task {
             await transcribe()
         }
@@ -78,8 +81,11 @@ actor SpeechRecognizer: ObservableObject {
     }
     
     @MainActor func stopTranscribing() {
+        isRecording = false
+        
         Task {
             await reset()
+            transcript = ""
         }
     }
     
@@ -156,7 +162,7 @@ actor SpeechRecognizer: ObservableObject {
     nonisolated private func transcribe(_ message: String) {
         Task { @MainActor in
             transcript = message
-            objectWillChange.send()
+            
         }
     }
     nonisolated private func transcribe(_ error: Error) {

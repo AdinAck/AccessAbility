@@ -17,8 +17,7 @@ enum TokenType: Hashable {
 enum Keyword: String {
     case create,
          edit,
-         delete,
-         select
+         delete
 }
 
 struct Token: CustomStringConvertible {
@@ -105,11 +104,23 @@ class Scanner {
 }
 
 class Tokenizer: Scanner {
-    private var tokens: [Token] = []
+    var tokens: [Token] = []
     private var index:  Int     = 0
     
-    static let ws: String = " \r\n"
+    static let ws: Set = Set([" ", "\r", "\n"]) // sepcial characters didn't work in string -_-
     static let punc: String = ";,(){}"
+    
+    private func isNumber(_ aString: String) -> Bool {
+        if aString[aString.startIndex] == "-" {
+            return aString[aString.index(after: aString.startIndex)...].reduce(true, { partial, char in
+                partial && char.isNumber
+            })
+        } else {
+            return aString.reduce(true, { partial, char in
+                partial && char.isNumber
+            })
+        }
+    }
     
     private func ingestToken() {
         let data = extract()
@@ -120,18 +131,16 @@ class Tokenizer: Scanner {
             type = .keyword
         } else if Self.punc.contains(data) {
             type = .punctuation(data)
-        } else if data.reduce(true, { partial, char in
-            partial && char.isNumber
-        }) {
+        } else if isNumber(data) {
             type = .number
         }
         
         tokens.append(
-            Token(data: extract(), type: type, keyword: keyword)
+            Token(data: data, type: type, keyword: keyword)
         )
     }
     
-    func tokenize() {
+    func tokenize() -> Int {
         /*
          1. start pointer seek to non-whitespace
          2. end pointer: jump to start pointer
@@ -144,7 +153,7 @@ class Tokenizer: Scanner {
         while true {
             // 1
             seek(.start) { char in
-                !Self.ws.contains(char)
+                !Self.ws.contains(String(char))
             }
             
             // 2
@@ -156,7 +165,7 @@ class Tokenizer: Scanner {
             // 4
             if !Self.punc.contains(extract()) {
                 seek(.end) { char in
-                    Self.ws.contains(char) ||
+                    Self.ws.contains(String(char)) ||
                     Self.punc.contains(char)
                 }
             }
@@ -167,6 +176,8 @@ class Tokenizer: Scanner {
             // 6
             jump(pointer: .start, to: .end)
         }
+        
+        return tokens.count
     }
     
     func current() -> Token {
@@ -195,6 +206,8 @@ class Tokenizer: Scanner {
             switch fragment {
             case .type(let theType):
                 if current().type != theType {
+                    theResult.value = false
+                    
                     if let error = CommandError.fromType(theType) {
                         theResult.error = error
                     } else {
@@ -205,6 +218,8 @@ class Tokenizer: Scanner {
                 }
             case .keyword(let theKeyword):
                 if current().keyword != theKeyword {
+                    theResult.value = false
+                    
                     theResult.error = .unexpectedKeyword(expected: theKeyword)
                     
                     return theResult
@@ -218,6 +233,10 @@ class Tokenizer: Scanner {
     }
     
     func skipTo(type aType: TokenType) -> Token? {
+        defer {
+            let _ = next()
+        }
+        
         while current().type != aType {
             guard next() else { return nil }
         }

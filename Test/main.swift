@@ -8,18 +8,18 @@
 import Foundation
 
 func main() {
-    let buf = "create circle (0, 0) (50, 50);"
+    let buf = "\ncreate ellipse E1 (0, 0) (50, 50);"
 
     let theTokenizer = Tokenizer(buf)
-    theTokenizer.tokenize()
+    guard theTokenizer.tokenize() > 0 else { return }
 
     theTokenizer.dump()
 
-    let model = TestModel()
-    let proc = TestProcessor()
+    let model = Canvas()
+    let proc = CanvasProcessor()
 
     defer {
-        print(model.testAttr)
+        print(model.items)
         
         print("Done!")
     }

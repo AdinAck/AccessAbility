@@ -6,18 +6,17 @@
 //
 
 import Foundation
-import SwiftUI
 
 protocol Command {
     associatedtype ControllerT
     
     func recognizes(_ aTokenizer: Tokenizer) -> StatusResult<Bool>
-    func run(_ aController: ControllerT)
+    func run(_ aController: ControllerT) -> StatusResult<Bool>
 }
 
-protocol CommandProcessor: ObservableObject {
+protocol CommandProcessor {
     associatedtype ControllerT
     
     func recognizes(_ aTokenizer: Tokenizer) -> StatusResult<Bool>
-    func run(_ aController: ControllerT)
+    func run(_ aController: ControllerT) -> StatusResult<Bool>
 }
