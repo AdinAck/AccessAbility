@@ -10,7 +10,7 @@ Any app can register a mini-grammar with AccessAbility and allow natural languag
 ## Pipeline
 
 ```mermaid
-flowchart LR
+flowchart TD
     A[Speech] --> B[Speech Recognition - Swift]
     C[Preconditioning] --> D
     B --> D[GPT4 - OpenAI API]
