@@ -15,7 +15,8 @@ flowchart TD
     B --> D[GPT4 - OpenAI API]
     C[Preconditioning] --> D
     D --> E[Tokenizer]
-    E --> F[App Model]
-    F --> D
-    F --> G[View]
+    E --> F[Command Processor]
+    F --> G[App Model]
+    G --> D
+    G --> H[View]
 ```
