@@ -12,7 +12,7 @@ Any app can register a mini-grammar with AccessAbility and allow natural languag
 ## Pipeline
 
 ```mermaid
-graph LR
+graph TD
 
 subgraph User
   A[Speech]
@@ -43,9 +43,17 @@ subgraph AppModel
 end
 
 A --> B
-B --> D
+B --> C
 C --> D
 D --> E
 E --> F
 F --> G
+
+style User fill:#E6F3FF, stroke:#2470A0
+style SpeechRecognition fill:#E6F3FF, stroke:#2470A0
+style Preconditioning fill:#E6F3FF, stroke:#2470A0
+style LLM fill:#E6F3FF, stroke:#2470A0
+style Tokenizer fill:#E6F3FF, stroke:#2470A0
+style CommandProcessor fill:#E6F3FF, stroke:#2470A0
+style AppModel fill:#E6F3FF, stroke:#2470A0
 ```
