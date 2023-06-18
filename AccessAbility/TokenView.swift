@@ -25,14 +25,18 @@ struct TokenView: View {
     }
     
     var body: some View {
-        HStack {
-            ForEach(tokens, id: \.data) { token in
-                Text(token.data)
-                    .padding(4)
-                    .background(
-                        RoundedRectangle(cornerRadius: 6)
-                            .foregroundColor(getColor(from: token.type))
-                    )
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack {
+                ForEach(0..<tokens.count, id: \.self) { i in
+                    let token = tokens[i]
+                    
+                    Text(token.data)
+                        .padding(4)
+                        .background(
+                            RoundedRectangle(cornerRadius: 6)
+                                .foregroundColor(getColor(from: token.type))
+                        )
+                }
             }
         }
     }

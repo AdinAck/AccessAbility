@@ -30,6 +30,7 @@
 		40AD228E2A3EC4B300E58E88 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AD22852A3EA62F00E58E88 /* Utils.swift */; };
 		40AD228F2A3EC4BA00E58E88 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AD22832A3EA4A600E58E88 /* Grid.swift */; };
 		40AD22912A3EC7B800E58E88 /* TokenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AD22902A3EC7B800E58E88 /* TokenView.swift */; };
+		40AD22932A3F647700E58E88 /* CanvasItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AD22922A3F647700E58E88 /* CanvasItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -60,6 +61,7 @@
 		40AD22852A3EA62F00E58E88 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		40AD22872A3EB11A00E58E88 /* CanvasCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasCommands.swift; sourceTree = "<group>"; };
 		40AD22902A3EC7B800E58E88 /* TokenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenView.swift; sourceTree = "<group>"; };
+		40AD22922A3F647700E58E88 /* CanvasItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasItem.swift; sourceTree = "<group>"; };
 		40ED62262A3D4BB70064AC7D /* SpeechRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognizer.swift; sourceTree = "<group>"; };
 		40ED623D2A3E261E0064AC7D /* Tokenizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tokenizer.swift; sourceTree = "<group>"; };
 		40ED623F2A3E264E0064AC7D /* StatusResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusResult.swift; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 			isa = PBXGroup;
 			children = (
 				40AD22802A3EA35900E58E88 /* Canvas.swift */,
+				40AD22922A3F647700E58E88 /* CanvasItem.swift */,
 				40AD22852A3EA62F00E58E88 /* Utils.swift */,
 				40AD22832A3EA4A600E58E88 /* Grid.swift */,
 			);
@@ -292,6 +295,7 @@
 				40AD22632A3E7EF200E58E88 /* ContentView.swift in Sources */,
 				40AD22842A3EA4A600E58E88 /* Grid.swift in Sources */,
 				40AD22742A3E7FDD00E58E88 /* Command.swift in Sources */,
+				40AD22932A3F647700E58E88 /* CanvasItem.swift in Sources */,
 				40AD22612A3E7EF200E58E88 /* AccessAbilityApp.swift in Sources */,
 				40AD226F2A3E7F1000E58E88 /* SpeechRecognizer.swift in Sources */,
 				40AD22882A3EB11A00E58E88 /* CanvasCommands.swift in Sources */,

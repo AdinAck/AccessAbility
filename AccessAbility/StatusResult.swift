@@ -15,7 +15,11 @@ enum CommandError {
          numberExpected,
          punctuationExpected,
     
-         unexpectedKeyword(expected: Keyword)
+         unexpectedKeyword(expected: Keyword),
+    
+         itemDoesNotExist,
+    
+         invalidColor
     
     static func fromType(_ aType: TokenType) -> Self? {
         switch aType {

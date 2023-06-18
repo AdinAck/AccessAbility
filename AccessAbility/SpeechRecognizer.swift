@@ -161,7 +161,7 @@ actor SpeechRecognizer: ObservableObject {
     
     nonisolated private func transcribe(_ message: String) {
         Task { @MainActor in
-            transcript = message
+            transcript = message.lowercased()
             
         }
     }

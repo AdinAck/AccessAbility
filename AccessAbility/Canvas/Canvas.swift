@@ -9,21 +9,6 @@ import Foundation
 import SwiftUI
 import Combine
 
-enum ShapeType {
-    case ellipse,
-         rectangle
-}
-
-struct CanvasShape: Identifiable, Hashable {
-    var id: String
-    var type: ShapeType
-    var boundingBox: CGRect
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-}
-
 struct World {
     let origin: CGPoint
     let scale: CGFloat
@@ -88,33 +73,20 @@ struct CanvasView: View {
         return model.selected.contains(item) || model.tmpSelected.contains(item)
     }
     
-    func pathFrom(shape aShape: CanvasShape, origin: CGPoint) -> Path {
-        switch aShape.type {
-        case .ellipse:
-            return Path { path in
-                path.addEllipse(in: aShape.boundingBox + origin)
-            }
-        case .rectangle:
-            return Path { path in
-                path.addRect(aShape.boundingBox + origin)
-            }
-        }
-    }
-    
-    @State var tmp: CGPoint = .zero
+    @State private var tmp: CGPoint = .zero
     
     var body: some View {
         VStack {
             // canvas
             GeometryReader { geometry in
-                let frame = geometry.frame(in: CoordinateSpace.global) // for mouse
+//                let frame = geometry.frame(in: CoordinateSpace.global) // for mouse
                 
                 let width = geometry.size.width
                 let height = geometry.size.height
                 let center = CGPoint(x: width / 2, y: height / 2)
                 let origin = model.origin + tmp + center
                 
-                let world = World(origin: origin, scale: model.gridSize * model.scale)
+//                let world = World(origin: origin, scale: model.gridSize * model.scale)
                 
                 // background
                 Color.black
@@ -134,12 +106,11 @@ struct CanvasView: View {
                 
                 // components
                 ForEach(model.items) { item in
-                    
-                    pathFrom(shape: item, origin: origin)
-                        .stroke(style: StrokeStyle(lineWidth: 8, lineJoin: .round))
-                        .foregroundColor(.white)
+                    CanvasItem(type: item.type, boundingBox: item.boundingBox + origin)
+                        .stroke(style: StrokeStyle(lineWidth: item.thickness, lineCap: .round, lineJoin: .round))
+                        .foregroundColor(item.color)
+                        .transition(.scale)
                 }
-                .animation(.default, value: model.items)
                 .drawingGroup()
             }
         }

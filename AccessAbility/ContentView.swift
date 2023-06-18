@@ -16,6 +16,9 @@ struct ContentView: View {
     @State var responseRaw: String = ""
     @State var responseTokens: [Token] = []
     @State var thinking: Bool = false
+    @State var error: Bool = false
+    
+    @State var history: [[Token]] = []
     
     @State private var counter: Int = 0
     
@@ -37,85 +40,129 @@ struct ContentView: View {
             return theResult
         }
         
-        theResult = proc.run(canvas)
+        withAnimation(.spring()) {
+            theResult = proc.run(canvas)
+        }
+        
+        guard theResult.value else { return theResult }
+        
+        if theResult.error != nil {
+            return theResult
+        }
+        
+        gpt.recordValidTransaction()
+        
+        withAnimation(.default) {
+            history.append(theTokenizer.tokens)
+        }
         
         return theResult
     }
     
     var body: some View {
-        ZStack {
-            CanvasView()
-                .environmentObject(canvas)
+        NavigationView {
+            List {
+                Section("History") {
+                    ForEach(0..<history.count, id: \.self) { i in
+                        let tokens = history[i]
+                        
+                        TokenView(tokens: tokens)
+                    }
+                }
+            }
             
-            VStack {
-                HStack {
-                    Text(speech.transcript)
-                        .bold()
-                        .padding(.horizontal)
+            ZStack {
+                CanvasView()
+                    .environmentObject(canvas)
+                
+                VStack {
+                    HStack {
+                        Text(speech.transcript)
+                            .bold()
+                            .padding(.horizontal)
+                        
+                        Spacer()
+                        
+                        if thinking {
+                            ProgressView()
+                        } else if speech.isRecording { // kinda hacky but whatever
+                            TokenView(tokens: responseTokens)
+                        }
+                        
+                        Button(error ? "?" : speech.isRecording ? "Transcribing" : thinking ? "..." : "Ready") {
+                            if speech.isRecording {
+                                speech.stopTranscribing()
+                            } else {
+                                speech.resetTranscript()
+                                speech.startTranscribing()
+                            }
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .tint(error ? .red : speech.isRecording ? .green : thinking ? .orange : .blue)
+                        .padding()
+                    }
+                    .background(.background)
+                    .animation(.default, value: thinking)
+                    .animation(.default, value: speech.transcript)
+                    .animation(.default, value: speech.isRecording)
+                    .animation(.default, value: error)
                     
                     Spacer()
-                    
-                    if thinking {
-                        ProgressView()
-                    } else if speech.isRecording { // kinda hacky but whatever
-                        TokenView(tokens: responseTokens)
-                    }
-                    
-                    Button(speech.isRecording ? "Transcribing" : thinking ? "..." : "Ready") {
-                        if speech.isRecording {
-                            speech.stopTranscribing()
-                        } else {
-                            speech.resetTranscript()
-                            speech.startTranscribing()
-                        }
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .tint(speech.isRecording ? .red : thinking ? .orange : .blue)
-                    .padding()
                 }
-                .background(.background)
-                .animation(.default, value: thinking)
-                .animation(.default, value: speech.transcript)
-                .animation(.default, value: speech.isRecording)
-                
-                Spacer()
             }
-        }
-            .onChange(of: speech.transcript) { newValue in
-                counter = 0
-            }
-            .onReceive(timer) { _ in
-                Task {
-                    if counter >= 10 {
-                        if speech.transcript != "" {
-                            speech.stopTranscribing()
-                            thinking = true
-                            do {
-                                responseRaw = try await gpt.ingest(query: speech.transcript.lowercased())
-                                responseTokens = []
-                                
-                                for segment in responseRaw.components(separatedBy: ";") {
-                                    let theResult = process(response: segment)
+                .onChange(of: speech.transcript) { newValue in
+                    counter = 0
+                }
+                .onChange(of: error, perform: { newValue in
+                    Task {
+                        try! await Task.sleep(for: .seconds(2))
+                        error = false
+                    }
+                })
+                .onReceive(timer) { _ in
+                    Task {
+                        if counter >= 14 {
+                            if speech.transcript != "" {
+                                speech.stopTranscribing()
+                                thinking = true
+                                do {
+                                    responseRaw = try await gpt.ingest(query: speech.transcript.lowercased())
+                                    responseTokens = []
                                     
-                                    if let error = theResult.error {
-                                        print("[ERR] Proc failed with error (\(error).")
+                                    for segment in responseRaw.components(separatedBy: ";") {
+                                        guard segment != "" else { continue }
+                                        
+                                        let theResult = process(response: segment)
+                                        
+                                        if !theResult.value {
+                                            responseTokens = []
+                                            self.error = true
+                                            break
+                                        }
+                                        
+                                        if let error = theResult.error {
+                                            print("[ERR] Proc failed with error (\(error).")
+                                            responseTokens = []
+                                            self.error = true
+                                            break
+                                        }
                                     }
+                                    
+                                } catch {
+                                    responseRaw = "Error"
                                 }
                                 
-                            } catch {
-                                responseRaw = "Error"
+                                thinking = false
+                                speech.resetTranscript()
+                                speech.startTranscribing()
                             }
-                            
-                            thinking = false
-                            speech.resetTranscript()
-                            speech.startTranscribing()
+                            counter = 0
+                        } else {
+                            counter += 1
                         }
-                        counter = 0
-                    } else {
-                        counter += 1
                     }
-                }
             }
+        }
     }
 }
 

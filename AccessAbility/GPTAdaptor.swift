@@ -13,8 +13,12 @@ class GPTAdaptor: ObservableObject {
     private let gateway: OpenAISwift
     private var history: [ChatMessage] = []
     
-    init(examples someExamples: [(String, String)]) {
+    private var convCache: (ChatMessage, ChatMessage)? = nil
+    
+    init(prologue aPrologue: String, examples someExamples: [(String, String)]) {
         gateway = OpenAISwift(authToken: Self.apiKey)
+        
+        history.append(ChatMessage(role: .system, content: aPrologue))
         
         for (query, command) in someExamples {
             history.append(ChatMessage(role: .user, content: query))
@@ -23,10 +27,10 @@ class GPTAdaptor: ObservableObject {
     }
     
     func ingest(query aQuery: String) async throws -> String {
-        history.append(ChatMessage(role: .user, content: aQuery))
+        let q = ChatMessage(role: .user, content: aQuery)
         
         let response = try await gateway.sendChat(
-            with: history,
+            with: history + [q],
             model: .gpt4(.gpt4),
             temperature: 0.2
         )
@@ -35,10 +39,17 @@ class GPTAdaptor: ObservableObject {
         guard let choices = response.choices else { return "" }
         guard let best = choices.first else { return "" }
         
-        history.append(best.message)
-        
         let result = best.message.content
         
+        convCache = (q, best.message)
+        
         return result
+    }
+    
+    func recordValidTransaction() {
+        if let convCache {
+            history.append(convCache.0)
+            history.append(convCache.1)
+        }
     }
 }

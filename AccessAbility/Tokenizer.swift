@@ -17,7 +17,10 @@ enum TokenType: Hashable {
 enum Keyword: String {
     case create,
          edit,
-         delete
+         delete,
+         color,
+         stroke,
+         view
 }
 
 struct Token: CustomStringConvertible {
@@ -46,7 +49,7 @@ class Scanner {
     private var startPtr: Int  = 0
     private var endPtr:   Int  = 0
     
-    fileprivate var eof:      Bool = false
+    fileprivate var eof:  Bool = false
     
     init(_ aBuffer: String) {
         self.buffer = aBuffer
