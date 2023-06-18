@@ -12,8 +12,8 @@ Any app can register a mini-grammar with AccessAbility and allow natural languag
 ```mermaid
 flowchart TD
     A[Speech] --> B[Speech Recognition - Swift]
-    C[Preconditioning] --> D
     B --> D[GPT4 - OpenAI API]
+    C[Preconditioning] --> D
     D --> E[Tokenizer]
     E --> F[App Model]
     F --> D
