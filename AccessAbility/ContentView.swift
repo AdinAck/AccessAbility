@@ -126,7 +126,7 @@ struct ContentView: View {
                                 speech.stopTranscribing()
                                 thinking = true
                                 do {
-                                    responseRaw = try await gpt.ingest(query: speech.transcript.lowercased())
+                                    responseRaw = try await gpt.ingest(query: speech.transcript)
                                     responseTokens = []
                                     
                                     for segment in responseRaw.components(separatedBy: ";") {

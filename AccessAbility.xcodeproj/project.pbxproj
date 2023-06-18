@@ -31,6 +31,8 @@
 		40AD228F2A3EC4BA00E58E88 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AD22832A3EA4A600E58E88 /* Grid.swift */; };
 		40AD22912A3EC7B800E58E88 /* TokenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AD22902A3EC7B800E58E88 /* TokenView.swift */; };
 		40AD22932A3F647700E58E88 /* CanvasItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AD22922A3F647700E58E88 /* CanvasItem.swift */; };
+		40AD229C2A3F919D00E58E88 /* DotEnv in Frameworks */ = {isa = PBXBuildFile; productRef = 40AD229B2A3F919D00E58E88 /* DotEnv */; };
+		40AD229E2A3F920900E58E88 /* secret.env in Resources */ = {isa = PBXBuildFile; fileRef = 40AD229D2A3F920900E58E88 /* secret.env */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -62,6 +64,7 @@
 		40AD22872A3EB11A00E58E88 /* CanvasCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasCommands.swift; sourceTree = "<group>"; };
 		40AD22902A3EC7B800E58E88 /* TokenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenView.swift; sourceTree = "<group>"; };
 		40AD22922A3F647700E58E88 /* CanvasItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasItem.swift; sourceTree = "<group>"; };
+		40AD229D2A3F920900E58E88 /* secret.env */ = {isa = PBXFileReference; lastKnownFileType = text; path = secret.env; sourceTree = "<group>"; };
 		40ED62262A3D4BB70064AC7D /* SpeechRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognizer.swift; sourceTree = "<group>"; };
 		40ED623D2A3E261E0064AC7D /* Tokenizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tokenizer.swift; sourceTree = "<group>"; };
 		40ED623F2A3E264E0064AC7D /* StatusResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusResult.swift; sourceTree = "<group>"; };
@@ -79,6 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40AD229C2A3F919D00E58E88 /* DotEnv in Frameworks */,
 				40AD227A2A3E8A0600E58E88 /* OpenAISwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -116,6 +120,7 @@
 				40ED623D2A3E261E0064AC7D /* Tokenizer.swift */,
 				40AD22902A3EC7B800E58E88 /* TokenView.swift */,
 				40AD22642A3E7EF300E58E88 /* Assets.xcassets */,
+				40AD229D2A3F920900E58E88 /* secret.env */,
 				40AD22662A3E7EF300E58E88 /* Preview Content */,
 			);
 			path = AccessAbility;
@@ -210,6 +215,7 @@
 			name = AccessAbility;
 			packageProductDependencies = (
 				40AD22792A3E8A0600E58E88 /* OpenAISwift */,
+				40AD229B2A3F919D00E58E88 /* DotEnv */,
 			);
 			productName = AccessAbility;
 			productReference = 40AD225E2A3E7EF200E58E88 /* AccessAbility.app */;
@@ -243,6 +249,7 @@
 			);
 			mainGroup = 40ED620B2A3CF62E0064AC7D;
 			packageReferences = (
+				40AD229A2A3F919D00E58E88 /* XCRemoteSwiftPackageReference "DotEnv" */,
 			);
 			productRefGroup = 40ED62152A3CF62E0064AC7D /* Products */;
 			projectDirPath = "";
@@ -260,6 +267,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				40AD22682A3E7EF300E58E88 /* Preview Assets.xcassets in Resources */,
+				40AD229E2A3F920900E58E88 /* secret.env in Resources */,
 				40AD22652A3E7EF300E58E88 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -539,10 +547,26 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		40AD229A2A3F919D00E58E88 /* XCRemoteSwiftPackageReference "DotEnv" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/swiftpackages/DotEnv";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		40AD22792A3E8A0600E58E88 /* OpenAISwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = OpenAISwift;
+		};
+		40AD229B2A3F919D00E58E88 /* DotEnv */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 40AD229A2A3F919D00E58E88 /* XCRemoteSwiftPackageReference "DotEnv" */;
+			productName = DotEnv;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

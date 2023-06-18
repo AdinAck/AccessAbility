@@ -7,16 +7,19 @@
 
 import Foundation
 import OpenAISwift
+import DotEnv
 
 class GPTAdaptor: ObservableObject {
-    static private let apiKey: String = "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"
     private let gateway: OpenAISwift
     private var history: [ChatMessage] = []
     
     private var convCache: (ChatMessage, ChatMessage)? = nil
     
     init(prologue aPrologue: String, examples someExamples: [(String, String)]) {
-        gateway = OpenAISwift(authToken: Self.apiKey)
+        let path = Bundle.main.path(forResource: "secret", ofType: "env")
+        try! DotEnv.load(path: path!)
+        
+        gateway = OpenAISwift(authToken: ProcessInfo.processInfo.environment["API_KEY"]!)
         
         history.append(ChatMessage(role: .system, content: aPrologue))
         
